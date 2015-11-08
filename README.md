@@ -1,7 +1,4 @@
-# rexdep
-[![Travis Build Status](https://travis-ci.org/itchyny/rexdep.svg?branch=master)](https://travis-ci.org/itchyny/rexdep)
-[![Latest Version](https://img.shields.io/github/release/itchyny/rexdep.svg)](https://github.com/itchyny/rexdep/releases)
-
+# rexdep [![Travis Build Status](https://travis-ci.org/itchyny/rexdep.svg?branch=master)](https://travis-ci.org/itchyny/rexdep) [![Latest Version](https://img.shields.io/github/release/itchyny/rexdep.svg)](https://github.com/itchyny/rexdep/releases)
 ### Roughly extract dependency from source code
 The rexdep command is a tool for extracting dependency relation from a set of source codes.
 The idea of rexdep is very simple.
