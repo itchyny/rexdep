@@ -1,0 +1,1 @@
+rexdep --pattern '.' .

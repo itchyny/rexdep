@@ -1,0 +1,34 @@
+sudo: false
+language: go
+go:
+- 1.4
+env: PATH=/home/travis/gopath/bin:$PATH
+install:
+- go get github.com/laher/goxc
+- go get github.com/aryann/difflib
+script:
+- goxc -t
+- make test
+- make cross
+deploy:
+  provider: releases
+  api_key:
+    secure: kBfgx18Or35j1LeFbJ5DvY7vwx2zfJ1L4A8p1mF/uGKecsVBwvAxB4LijdM8ZEDW3fUbK+3DX/GLS8rZrX96FkRTxXyMjrQZ7pKzqg6iE9JsDCflvQQJfmu4DnmqFAx9pU6MjD8lBuEX/xRQ9TCjR+O5CMwRPbocsTbJdfEC++8YYzq9/woO0ZrsOItthioucdtScvmbMc7VtvssNfc2lczGKHzcT7NpLC6/TvwIbvWO10Ntbwp0/1xC3wxYxTUd/Aiz0xSbGQw/1aIgid3w0pJuwtytbv/HafNggrehHxa87d/cAf1mY7HDw04A2ECSD7DAhHn4fKLUTO8CPVh+ria7JhlJ5AnRZazrQqBqxWWK7DILGnN2j4uX8c2b19cID68V3V7KzPE1xwmBb5c1YNIyNzA5gHKhIw40FG9U9hGlhs4E4238D36CcSa+JjVpvnRzJXeiO6kR1ja9D4XnR7cn+ARGuF33z5e+/CozoMJgVHWjxnws8NIEqaejBjet1AqQqBzntyi2A/eF9T1CS2Igv9fJytMI2xf80DIMcBM4hvXCL1JwBerT5rZnYwJydxHmXsf4pEPVE5V6GyN3X0Xj+Zh9mZ+NGXjyziFHy2L/OBVkK4W+MTg0ioAPGfzlacNYnIKEmTMujAjmOjMmU5EVE76ijgUdAYLVM88aYJc=
+  file:
+    - snapshot/rexdep_darwin_386.zip
+    - snapshot/rexdep_darwin_amd64.zip
+    - snapshot/rexdep_freebsd_386.zip
+    - snapshot/rexdep_freebsd_amd64.zip
+    - snapshot/rexdep_freebsd_arm.zip
+    - snapshot/rexdep_linux_386.tar.gz
+    - snapshot/rexdep_linux_amd64.tar.gz
+    - snapshot/rexdep_linux_arm.tar.gz
+    - snapshot/rexdep_snapshot_amd64.deb
+    - snapshot/rexdep_snapshot_armhf.deb
+    - snapshot/rexdep_snapshot_i386.deb
+    - snapshot/rexdep_windows_386.zip
+    - snapshot/rexdep_windows_amd64.zip
+  on:
+    repo: itchyny/rexdep
+    tags: true
+    all_branches: false

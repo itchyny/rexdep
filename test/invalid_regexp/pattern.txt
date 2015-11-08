@@ -1,0 +1,2 @@
+The argument of --pattern (-p) is invalid. Specify a valid regular expression.
+error parsing regexp: missing closing ): `(`
