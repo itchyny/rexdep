@@ -70,7 +70,7 @@ Since the arguments are regular expressions, you can flexibly limit the modules 
 
 ## Installation
 ### Download binary from GitHub Releases
-[Releases ・ itchyny/rexdep - GitHub](https://github.com/itchyny/rexdep/releases)
+[Releases・itchyny/rexdep - GitHub](https://github.com/itchyny/rexdep/releases)
 
 ### Build from source
 ```bash
