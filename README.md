@@ -58,6 +58,7 @@ The above image is a part of the output. We notice that the structure is very fl
  $ rexdep --pattern '\s*"(?:\S+/)+(\S+)"' --start '^import \($' --end '^\)$' --digraph go --trimext $(find ./consul/ -name '*.go' | grep -v '_test') | dot -Tpng -o consul.png
 ```
 [![consul](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/consul-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/consul.png)
+In order to extract imports from source codes written in Go, you can use `--start` and `--end`. The `rexdep` command extract imports between the lines matched by the start and end arguments.
 
 ### [pandoc](https://github.com/jgm/pandoc)
 ```sh
@@ -65,6 +66,7 @@ The above image is a part of the output. We notice that the structure is very fl
  $ rexdep --pattern '^\s*import +(?:qualified +)?(\S+(?:Pandoc)\S+)' --module '^module +(\S+(?:Pandoc)\S+)' --digraph pandoc --recursive ./pandoc/src/ | dot -Tpng -o pandoc.png
 ```
 [![pandoc](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/pandoc-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/pandoc.png)
+Since the arguments are regular expressions, you can flexibly limit the modules by specific words.
 
 ## Installation
 ### Download binary from GitHub Releases
