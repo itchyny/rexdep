@@ -2,6 +2,20 @@
 ### Roughly extract dependency from source code
 The rexdep command is a tool for extracting dependency relation from a set of source codes.
 
+When we see a large project, we sometimes want to understand the code base intuitively.
+We sometimes join a project at work, the project has lots of source code.
+We sometimes want to make pull requests to famous OSS software, but the software is too large.
+How can we understand the file structure of a huge project without reading through the source codes?
+
+It is a good solution to check the module dependency relations among the software.
+A module in a software depends on other modules in that software.
+Some module depends on many other modules or another module does not depend on others.
+Extracting the module dependency enables us to understand the relationship among the modules.
+We can use the dependency graph to read the software top down or bottom up.
+We sometimes find the core modules in the project because such modules are depended by many other modules.
+
+So, how can we extract dependency relationship from a code base of a software?
+
 The idea of rexdep is very simple; in many cases, we can extract the names of imported files by a regular expression.
 For example, consider a situation that `test1.c` includes `test2.c` and `test3.c`.
 ```c
@@ -30,7 +44,7 @@ For the above example, we can use rexdep to extract the dependency between the C
 The captured string is regarded as the filenames included by the source code.
 We can of course specify multiple files.
 We can also specify directories and rexdep recursively investigate the source files under the subdirectories.
-Allowing the user to specify by regular expression, it can be used for various languages; `^\s*#include\s*[<"](\S+)[>"]` for C language or `^\s*import +(?:qualified +)?(\S+)` for Haskell language.
+Allowing the user to specify by regular expression, it can be used for various languages; `^\s*#include\s*[<"](\S+)[>"]` for C language or `^\s*import +(?:qualified +)?([[:alnum:].]+)` for Haskell language.
 
 There are some other tools targeting on specific languages.
 They investigate source codes at the level of abstract syntax tree and therefore much powerful.
