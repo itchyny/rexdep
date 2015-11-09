@@ -4,11 +4,6 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-var Name string
-var Description string
-var Version string
-var Author string
-
 func run(args []string) int {
 	app := newApp()
 	if app.Run(args) != nil {
