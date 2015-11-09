@@ -6,14 +6,14 @@ import (
 
 var Flags = []cli.Flag{
 	cli.StringFlag{
-		Name:  "module, m",
-		Value: "",
-		Usage: "Pattern to extract module names (example: '^module\\s+(\\S+)')",
-	},
-	cli.StringFlag{
 		Name:  "pattern, p",
 		Value: "",
 		Usage: "Pattern to extract imports (example: '^import\\s+(\\S+)')",
+	},
+	cli.StringFlag{
+		Name:  "module, m",
+		Value: "",
+		Usage: "Pattern to extract module names (example: '^module\\s+(\\S+)')",
 	},
 	cli.StringFlag{
 		Name:  "start, s",
