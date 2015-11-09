@@ -1,3 +1,5 @@
+BIN = rexdep
+
 all: clean test build
 
 test: build
