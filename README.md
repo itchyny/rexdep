@@ -1,7 +1,8 @@
 # rexdep [![Travis Build Status](https://travis-ci.org/itchyny/rexdep.svg?branch=master)](https://travis-ci.org/itchyny/rexdep) [![Latest Version](https://img.shields.io/github/release/itchyny/rexdep.svg)](https://github.com/itchyny/rexdep/releases)
 ### Roughly extract dependency from source code
 The rexdep command is a tool for extracting dependency relation from a set of source codes.
-The idea of rexdep is very simple.
+
+The idea of rexdep is very simple; in many cases, we can extract the names of imported files by a regular expression.
 For example, consider a situation that `test1.c` includes `test2.c` and `test3.c`.
 ```c
 #include "test2.c"
@@ -10,28 +11,29 @@ For example, consider a situation that `test1.c` includes `test2.c` and `test3.c
 int main...
 ```
 The file `test1.c` depends on `test2.c` and `test3.c`.
-This relation can be easily extracted by matching a simple regular expression.
+This relation can be easily extracted using a simple regular expression.
 ```
  $ grep '^#include ".*"' test1.c | sed 's/^#include *"\(.*\)"/\1/'
 test2.c
 test3.c
 ```
-This simple way can be used for many languages.
-For example, `import` keyword is used in Python and Haskell, `require` is used in Ruby.
+This way can be applied for many languages.
+For example, `import` keyword is used in Python and Haskell and `require` in Ruby.
 
-The rexdep command enables to specify the `pattern` to extract the module dependency.
-For the above example, you can also use rexdep to extract the dependency.
+The rexdep command enables us to specify the `pattern`, the regular expression to extract the module dependency from source codes.
+For the above example, we can use rexdep to extract the dependency between the C source codes.
 ```
  $ rexdep --pattern '^\s*#include\s*"(\S+)"' test1.c
 "test1.c" -> "test2.c";
 "test1.c" -> "test3.c";
 ```
-You can of course specify multiple files, and you can even specify directories and rexdep recursively investigate the source files under the subdirectories.
-You may use `^\s*#include\s*[<"](\S+)[>"]` for C language or `^\s*import +(?:qualified +)?(\S+)` for Haskell language.
-Allowing the user to specify by regular expression, it can be used for various languages.
+The captured string is regarded as the filenames included by the source code.
+We can of course specify multiple files.
+We can also specify directories and rexdep recursively investigate the source files under the subdirectories.
+Allowing the user to specify by regular expression, it can be used for various languages; `^\s*#include\s*[<"](\S+)[>"]` for C language or `^\s*import +(?:qualified +)?(\S+)` for Haskell language.
 
 There are some tools targeting on specific languages.
-They investigate the source code at the level of abstract syntax tree and therefore are much powerful.
+They investigate source codes at the level of abstract syntax tree and therefore much powerful.
 The rexdep command, on the other hand, simply checks the source code by a regular expression given by the user.
 It may not as powerful as AST-level tools, but the idea of rexdep is very simple and can be used for many languages.
 
@@ -42,7 +44,7 @@ It may not as powerful as AST-level tools, but the idea of rexdep is very simple
  $ rexdep --pattern '^\s*#include\s*[<"](\S+)[>"]' --digraph git ./git/*.h | dot -Tpng -o git.png
 ```
 [![git](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/git-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/git.png)
-The source code of Git is large and the above example checks only header files.
+The code base of Git is large and the above example checks only header files. The above image (click to see the full image) reveals the relationship between the header files.
 
 ### [Vim](https://github.com/vim/vim)
 ```sh
@@ -50,23 +52,31 @@ The source code of Git is large and the above example checks only header files.
  $ rexdep --pattern '^\s*#include\s*[<"](\S+)[>"]' --digraph vim ./vim/src/*.{c,h} | dot -Tpng -o vim.png
 ```
 [![vim](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/vim-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/vim.png)
-The above image is a part of the output. We notice that the structure is very flat and may files include `vim.h`.
+We notice that the structure is flat and many files include `vim.h`.
 
 ### [consul](https://github.com/hashicorp/consul)
 ```sh
  $ git clone --depth 1 https://github.com/hashicorp/consul
- $ rexdep --pattern '\s*"(?:\S+/)+(\S+)"' --start '^import \($' --end '^\)$' --digraph go --trimext $(find ./consul/ -name '*.go' | grep -v '_test') | dot -Tpng -o consul.png
+ $ rexdep --pattern '"github.com/(?:hashicorp/consul/(?:\S+/)*)?(\S+)"' --start '^import +["(]' --end '^\)$|^import +"' --digraph go --trimext $(find ./consul/ -name '*.go' | grep -v '_test') | dot -Tpng -o consul.png
 ```
 [![consul](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/consul-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/consul.png)
-In order to extract imports from source codes written in Go, you can use `--start` and `--end`. The `rexdep` command extract imports between the lines matched by the start and end arguments.
+It is difficult to extract dependency relation from source codes written in Go because we can use functions from the other codes at the same directory without writing import. We can skip the directories by `(?:\S/)*`. The `rexdep` command extract imports between the lines matched by the `start` and `end` arguments.
 
 ### [pandoc](https://github.com/jgm/pandoc)
 ```sh
  $ git clone --depth 1 https://github.com/jgm/pandoc
- $ rexdep --pattern '^\s*import +(?:qualified +)?(\S+(?:Pandoc)\S+)' --module '^module +(\S+(?:Pandoc)\S+)' --digraph pandoc --recursive ./pandoc/src/ | dot -Tpng -o pandoc.png
+ $ rexdep --pattern '^\s*import +(?:qualified +)?([[:alnum:].]+Pandoc[[:alnum:].]*)' --module '^module +([[:alnum:].]+Pandoc[[:alnum:].]*)' --trimext --digraph pandoc --recursive ./pandoc/src/ | dot -Tpng -o pandoc.png
 ```
 [![pandoc](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/pandoc-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/pandoc.png)
-Since the arguments are regular expressions, you can flexibly limit the modules by specific words.
+We can flexibly limit the modules by specific words.
+
+### [lens](https://github.com/ekmett/lens)
+```sh
+ $ git clone --depth 1 https://github.com/ekmett/lens
+ $ rexdep --pattern '^\s*import +(?:qualified +)?(\S+Lens\S*)' --module '^module +(\S+Lens\S*)' --trimext --digraph lens --recursive ./lens/src/ | dot -Tpng -o lens.png
+```
+[![lens](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/lens-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/lens.png)
+It is very fun to see the dependency graph of cool libraries like lens, isn't it?
 
 ## Installation
 ### Download binary from GitHub Releases
