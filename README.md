@@ -1,11 +1,11 @@
 # rexdep [![Travis Build Status](https://travis-ci.org/itchyny/rexdep.svg?branch=master)](https://travis-ci.org/itchyny/rexdep) [![Latest Version](https://img.shields.io/github/release/itchyny/rexdep.svg)](https://github.com/itchyny/rexdep/releases)
 ### Roughly extract dependency from source code
-The rexdep command is a tool for extracting dependency relation from a set of source codes.
+The rexdep command is a tool for extracting dependency relation from software.
 
-When we see a large project, we sometimes want to understand the code base intuitively.
+When we see a large project, we sometimes want to understand the code structure intuitively.
 We sometimes join a project at work, the project has lots of source code.
 We sometimes want to make pull requests to famous OSS software, but the software is too large.
-How can we understand the file structure of a huge project without reading through the source codes?
+How can we understand the file structure of a huge project without reading through the software?
 
 It is a good solution to check the module dependency relations among the software.
 A module in a software depends on other modules in that software.
@@ -14,10 +14,11 @@ Extracting the module dependency enables us to understand the relationship among
 We can use the dependency graph to read the software top down or bottom up.
 We sometimes find the core modules in the project because such modules are depended by many other modules.
 
-So, how can we extract dependency relationship from a code base of a software?
+So, how can we extract dependency relationship from a code base of software?
 
-The idea of rexdep is very simple; in many cases, we can extract the names of imported files by a regular expression.
-For example, consider a situation that `test1.c` includes `test2.c` and `test3.c`.
+The idea of rexdep is very simple; in many cases, we can extract the module names by a regular expression.
+Let me explain by a simple example in C language, where we want to extract the dependency relations between the files, rather than modules.
+Consider a situation that `test1.c` includes `test2.c` and `test3.c`.
 ```c
 #include "test2.c"
 #include "test3.c"
