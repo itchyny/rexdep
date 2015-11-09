@@ -12,7 +12,7 @@ install: deps
 	go install
 
 cross: deps
-	goxc -os="linux darwin freebsd windows" -arch="386 amd64 arm" -d . \
+	goxc -build-ldflags="" -os="linux darwin freebsd windows" -arch="386 amd64 arm" -d . \
 	    -resources-include='README*' -n $(BIN)
 
 deps:
