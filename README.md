@@ -32,10 +32,11 @@ We can of course specify multiple files.
 We can also specify directories and rexdep recursively investigate the source files under the subdirectories.
 Allowing the user to specify by regular expression, it can be used for various languages; `^\s*#include\s*[<"](\S+)[>"]` for C language or `^\s*import +(?:qualified +)?(\S+)` for Haskell language.
 
-There are some tools targeting on specific languages.
+There are some other tools targeting on specific languages.
 They investigate source codes at the level of abstract syntax tree and therefore much powerful.
 The rexdep command, on the other hand, simply checks the source code by a regular expression given by the user.
-It may not as powerful as AST-level tools, but the idea of rexdep is very simple and can be used for many languages.
+It may not as powerful as AST-level tools, but the idea is very simple and can be used for many languages.
+Now you understand what rexdep stands for; *roughly extract dependency*.
 
 ## Examples
 ### [Git](https://github.com/git/git)
