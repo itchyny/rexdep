@@ -2,9 +2,6 @@ BIN = rexdep
 
 all: clean test build
 
-test: build
-	go test -v ./...
-
 build: deps
 	go build -o build/$(BIN) .
 
@@ -18,6 +15,9 @@ cross: deps
 deps:
 	go get -d -v .
 
+test: testdeps
+	go test -v ./...
+
 testdeps:
 	go get -d -v -t .
 
@@ -25,4 +25,4 @@ clean:
 	rm -rf build snapshot debian
 	go clean
 
-.PHONY: test build cross deps testdeps clean
+.PHONY: build cross deps test testdeps clean
