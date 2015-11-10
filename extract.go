@@ -68,14 +68,8 @@ func extractCore(module string, scanner *bufio.Scanner, config *Config) []*Depen
 			}
 		}
 		if enable {
-			if matches := config.Pattern.FindStringSubmatch(line); matches != nil {
-				var names []string
-				if len(matches) == 1 {
-					names = matches[:1]
-				} else {
-					names = matches[1:]
-				}
-				for _, name := range names {
+			if matches := config.Pattern.FindStringSubmatch(line); len(matches) >= 1 {
+				for _, name := range matches[1:] {
 					if name != "" && !appended[name] {
 						dependency.To = append(dependency.To, name)
 						appended[name] = true
