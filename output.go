@@ -14,7 +14,7 @@ func outputDefault(writer io.Writer, dependencies []*Dependency) {
 }
 
 func outputDot(writer io.Writer, dependencies []*Dependency) {
-	fmt.Fprintf(writer, "digraph graph {\n")
+	fmt.Fprintf(writer, "digraph \"graph\" {\n")
 	for _, dependency := range dependencies {
 		for _, to := range dependency.To {
 			fmt.Fprintf(writer, "  \"%s\" -> \"%s\";\n", dependency.From, to)
