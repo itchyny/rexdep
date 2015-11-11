@@ -15,7 +15,7 @@ cross: deps
 deps:
 	go get -d -v .
 
-test: testdeps
+test: testdeps build
 	go test -v ./...
 
 testdeps:
