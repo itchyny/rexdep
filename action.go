@@ -22,7 +22,7 @@ func action(ctx *cli.Context) {
 
 func output(writer io.Writer, config *Config, dependencies []*Dependency, errors []error) {
 	for _, err := range errors {
-		fmt.Fprintf(writer, "# "+err.Error()+"\n")
+		fmt.Fprintf(os.Stderr, "# "+err.Error()+"\n")
 	}
 	indent := ""
 	if config.Digraph != "" {
