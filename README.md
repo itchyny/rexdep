@@ -39,8 +39,8 @@ The rexdep command enables us to specify the `pattern`, the regular expression t
 For the above example, we can use rexdep to extract the dependency between the C source codes.
 ```
  $ rexdep --pattern '^\s*#include\s*"(\S+)"' test1.c
-"test1.c" -> "test2.c";
-"test1.c" -> "test3.c";
+test1.c test2.c
+test1.c test3.c
 ```
 The captured string is regarded as the filenames included by the source code.
 We can of course specify multiple files.
@@ -57,7 +57,7 @@ Now you understand what rexdep stands for; *roughly extract dependency*.
 ### [Git](https://github.com/git/git)
 ```sh
  $ git clone --depth 1 https://github.com/git/git
- $ rexdep --pattern '^\s*#include\s*[<"](\S+)[>"]' --digraph git ./git/*.h | dot -Tpng -o git.png
+ $ rexdep --pattern '^\s*#include\s*[<"](\S+)[>"]' --format dot ./git/*.h | dot -Tpng -o git.png
 ```
 [![git](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/git-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/git.png)
 The code base of Git is large and the above example checks only header files. The above image (click to see the full image) reveals the relationship between the header files.
@@ -65,7 +65,7 @@ The code base of Git is large and the above example checks only header files. Th
 ### [Vim](https://github.com/vim/vim)
 ```sh
  $ git clone --depth 1 https://github.com/vim/vim
- $ rexdep --pattern '^\s*#include\s*[<"](\S+)[>"]' --digraph vim ./vim/src/*.{c,h} | dot -Tpng -o vim.png
+ $ rexdep --pattern '^\s*#include\s*[<"](\S+)[>"]' --format dot ./vim/src/*.{c,h} | dot -Tpng -o vim.png
 ```
 [![vim](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/vim-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/vim.png)
 We notice that the structure is flat and many files include `vim.h`.
@@ -73,7 +73,7 @@ We notice that the structure is flat and many files include `vim.h`.
 ### [consul](https://github.com/hashicorp/consul)
 ```sh
  $ git clone --depth 1 https://github.com/hashicorp/consul
- $ rexdep --pattern '"github.com/(?:hashicorp/consul/(?:\S+/)*)?(\S+)"' --start '^import +["(]' --end '^\)$|^import +"' --digraph go --trimext $(find ./consul/ -name '*.go' | grep -v '_test') | dot -Tpng -o consul.png
+ $ rexdep --pattern '"github.com/(?:hashicorp/consul/(?:\S+/)*)?(\S+)"' --start '^import +["(]' --end '^\)$|^import +"' --format dot --trimext $(find ./consul/ -name '*.go' | grep -v '_test') | dot -Tpng -o consul.png
 ```
 [![consul](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/consul-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/consul.png)
 It is difficult to extract dependency relation from source codes written in Go because we can use functions from the other codes at the same directory without writing import. We can skip the directories by `(?:\S/)*`. The `rexdep` command extract imports between the lines matched by the `start` and `end` arguments.
@@ -81,7 +81,7 @@ It is difficult to extract dependency relation from source codes written in Go b
 ### [pandoc](https://github.com/jgm/pandoc)
 ```sh
  $ git clone --depth 1 https://github.com/jgm/pandoc
- $ rexdep --pattern '^\s*import +(?:qualified +)?([[:alnum:].]+Pandoc[[:alnum:].]*)' --module '^module +([[:alnum:].]+Pandoc[[:alnum:].]*)' --trimext --digraph pandoc --recursive ./pandoc/src/ | dot -Tpng -o pandoc.png
+ $ rexdep --pattern '^\s*import +(?:qualified +)?([[:alnum:].]+Pandoc[[:alnum:].]*)' --module '^module +([[:alnum:].]+Pandoc[[:alnum:].]*)' --trimext --format dot --recursive ./pandoc/src/ | dot -Tpng -o pandoc.png
 ```
 [![pandoc](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/pandoc-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/pandoc.png)
 We can flexibly limit the modules by specific words.
@@ -89,7 +89,7 @@ We can flexibly limit the modules by specific words.
 ### [lens](https://github.com/ekmett/lens)
 ```sh
  $ git clone --depth 1 https://github.com/ekmett/lens
- $ rexdep --pattern '^\s*import +(?:qualified +)?(\S+Lens\S*)' --module '^module +(\S+Lens\S*)' --trimext --digraph lens --recursive ./lens/src/ | dot -Tpng -o lens.png
+ $ rexdep --pattern '^\s*import +(?:qualified +)?(\S+Lens\S*)' --module '^module +(\S+Lens\S*)' --trimext --format dot --recursive ./lens/src/ | dot -Tpng -o lens.png
 ```
 [![lens](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/lens-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/lens.png)
 It is very fun to see the dependency graph of cool libraries like lens, isn't it?
