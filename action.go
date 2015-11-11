@@ -22,20 +22,17 @@ func action(ctx *cli.Context) {
 
 func output(writer io.Writer, config *Config, dependencies []*Dependency, errors []error) {
 	for _, err := range errors {
-		fmt.Fprintf(os.Stderr, "# "+err.Error()+"\n")
+		fmt.Fprintf(writer, "# "+err.Error()+"\n")
 	}
-	indent := ""
-	if config.Digraph != "" {
-		fmt.Fprintf(writer, "digraph \"%s\" {\n", config.Digraph)
-		indent = "  "
-	}
-	for _, dependency := range dependencies {
-		for _, to := range dependency.To {
-			fmt.Fprintf(writer, "%s\"%s\" -> \"%s\";\n", indent, dependency.From, to)
-		}
-	}
-	if config.Digraph != "" {
-		fmt.Fprintf(writer, "}\n")
+	switch config.Format {
+	case "dot":
+		outputDot(writer, dependencies)
+	case "csv":
+		outputCsv(writer, dependencies)
+	case "json":
+		outputJson(writer, dependencies)
+	default:
+		outputDefault(writer, dependencies)
 	}
 }
 

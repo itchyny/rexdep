@@ -29,6 +29,11 @@ var Flags = []cli.Flag{
 		Name:  "recursive, r",
 		Usage: "Recursively inspect files in subdirectories",
 	},
+	cli.StringFlag{
+		Name:  "format, f",
+		Value: "",
+		Usage: "Specify the format of the output; `default', `dot', `csv' and `json' are available.",
+	},
 	cli.BoolFlag{
 		Name:  "trimext, t",
 		Usage: "Trim the file extension.",

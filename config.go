@@ -12,6 +12,7 @@ type Config struct {
 	Module    *regexp.Regexp
 	Start     *regexp.Regexp
 	End       *regexp.Regexp
+	Format    string
 	Paths     []string
 	Recursive bool
 	Trimext   bool
@@ -72,6 +73,7 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 		Module:    module,
 		Start:     start,
 		End:       end,
+		Format:    ctx.GlobalString("format"),
 		Paths:     paths,
 		Recursive: ctx.GlobalBool("recursive"),
 		Trimext:   ctx.GlobalBool("trimext"),
