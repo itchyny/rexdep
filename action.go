@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/codegangsta/cli"
 )
@@ -15,22 +16,26 @@ func action(ctx *cli.Context) {
 		cli.ShowAppHelp(ctx)
 	} else {
 		dependencies, errors := gatherDependency(config)
-		for _, err := range errors {
-			fmt.Fprintf(ctx.App.Writer, "# "+err.Error()+"\n")
+		output(ctx.App.Writer, config, dependencies, errors)
+	}
+}
+
+func output(writer io.Writer, config *Config, dependencies []*Dependency, errors []error) {
+	for _, err := range errors {
+		fmt.Fprintf(writer, "# "+err.Error()+"\n")
+	}
+	indent := ""
+	if config.Digraph != "" {
+		fmt.Fprintf(writer, "digraph \"%s\" {\n", config.Digraph)
+		indent = "  "
+	}
+	for _, dependency := range dependencies {
+		for _, to := range dependency.To {
+			fmt.Fprintf(writer, "%s\"%s\" -> \"%s\";\n", indent, dependency.From, to)
 		}
-		indent := ""
-		if config.Digraph != "" {
-			fmt.Fprintf(ctx.App.Writer, "digraph \"%s\" {\n", config.Digraph)
-			indent = "  "
-		}
-		for _, dependency := range dependencies {
-			for _, to := range dependency.To {
-				fmt.Fprintf(ctx.App.Writer, "%s\"%s\" -> \"%s\";\n", indent, dependency.From, to)
-			}
-		}
-		if config.Digraph != "" {
-			fmt.Fprintf(ctx.App.Writer, "}\n")
-		}
+	}
+	if config.Digraph != "" {
+		fmt.Fprintf(writer, "}\n")
 	}
 }
 
