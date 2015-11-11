@@ -1,1 +1,2 @@
-Specify --pattern (-p) to extract imports.
+NAME:
+   rexdep - Roughly extract dependency from source code
