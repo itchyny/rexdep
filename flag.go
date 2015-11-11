@@ -29,11 +29,6 @@ var Flags = []cli.Flag{
 		Name:  "recursive, r",
 		Usage: "Recursively inspect files in subdirectories",
 	},
-	cli.StringFlag{
-		Name:  "digraph, g",
-		Value: "",
-		Usage: "Specify the name of directed graph for graphviz. If omited, the command does not print digraph line.",
-	},
 	cli.BoolFlag{
 		Name:  "trimext, t",
 		Usage: "Trim the file extension.",
