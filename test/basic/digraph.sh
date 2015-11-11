@@ -1,1 +1,1 @@
-rexdep --pattern '^import\s*(\S+)' --digraph graph 1 2 3 4 5
+rexdep --pattern '^import\s*(\S+)' --format dot 1 2 3 4 5
