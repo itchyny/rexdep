@@ -21,7 +21,7 @@ type Config struct {
 func makeConfig(ctx *cli.Context) (*Config, []error) {
 	var errs []error
 
-	if ctx.GlobalBool("help") {
+	if ctx.GlobalBool("help") || ctx.NumFlags() == 0 {
 		errs = append(errs, errors.New(""))
 		return nil, errs
 	}
