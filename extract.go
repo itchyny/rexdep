@@ -52,7 +52,7 @@ func extractFile(name string, config *Config) ([]*Dependency, []error) {
 
 func extractCore(module string, scanner *bufio.Scanner, config *Config) []*Dependency {
 	dependency := &Dependency{From: module}
-	dependencies := []*Dependency{dependency}
+	dependencies := []*Dependency{}
 	appended := make(map[string]bool)
 	enable := config.Start == nil
 	for scanner.Scan() {
@@ -63,7 +63,6 @@ func extractCore(module string, scanner *bufio.Scanner, config *Config) []*Depen
 		if config.Module != nil {
 			if matches := config.Module.FindStringSubmatch(line); matches != nil {
 				dependency = &Dependency{From: matches[len(matches)-1]}
-				dependencies = append(dependencies, dependency)
 				appended = make(map[string]bool)
 			}
 		}
@@ -71,6 +70,9 @@ func extractCore(module string, scanner *bufio.Scanner, config *Config) []*Depen
 			if matches := config.Pattern.FindStringSubmatch(line); len(matches) >= 1 {
 				for _, name := range matches[1:] {
 					if name != "" && !appended[name] {
+						if dependency.To == nil {
+							dependencies = append(dependencies, dependency)
+						}
 						dependency.To = append(dependency.To, name)
 						appended[name] = true
 					}
