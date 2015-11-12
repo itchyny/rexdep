@@ -37,11 +37,14 @@ func outputJson(writer io.Writer, dependencies []*Dependency) {
 		if i > 0 {
 			fmt.Fprintf(writer, ",")
 		}
-		fmt.Fprintf(writer, "\n  \"%s\": [\n", dependency.From)
-		for _, to := range dependency.To {
-			fmt.Fprintf(writer, "  \"%s\",\n", to)
+		fmt.Fprintf(writer, "\n  \"%s\": [", dependency.From)
+		for j, to := range dependency.To {
+			if j > 0 {
+				fmt.Fprintf(writer, ",")
+			}
+			fmt.Fprintf(writer, "\n    \"%s\"", to)
 		}
-		fmt.Fprintf(writer, "]")
+		fmt.Fprintf(writer, "\n  ]")
 	}
 	fmt.Fprintf(writer, "\n}\n")
 }
