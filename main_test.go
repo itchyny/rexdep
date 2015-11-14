@@ -19,6 +19,8 @@ func TestMain(t *testing.T) {
 			cmd := exec.Command("bash", filepath.Base(path))
 			cmd.Dir = filepath.Dir(path)
 			cmd.Env = []string{"PATH=" + build}
+			stderr := new(bytes.Buffer)
+			cmd.Stderr = stderr
 			output, err := cmd.Output()
 			if err != nil {
 				t.Errorf("FAIL: execution failed: " + path + ": " + err.Error())
@@ -28,7 +30,7 @@ func TestMain(t *testing.T) {
 				if err != nil {
 					t.Errorf("FAIL: error on reading output file: " + outfile)
 				} else {
-					diffs := difflib.Diff(strings.Split(string(output), "\n"), strings.Split(string(expected), "\n"))
+					diffs := difflib.Diff(strings.Split(stderr.String()+string(output), "\n"), strings.Split(string(expected), "\n"))
 					differs := false
 					for _, diff := range diffs {
 						differs = differs || diff.Delta == difflib.RightOnly
