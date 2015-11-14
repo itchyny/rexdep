@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"os"
 
 	"github.com/codegangsta/cli"
 )
@@ -11,7 +12,7 @@ func action(ctx *cli.Context) {
 	config, errors := makeConfig(ctx)
 	if errors != nil {
 		for _, err := range errors {
-			fmt.Fprintf(ctx.App.Writer, err.Error())
+			fmt.Fprintf(os.Stderr, err.Error())
 		}
 		cli.ShowAppHelp(ctx)
 	} else {
@@ -22,7 +23,7 @@ func action(ctx *cli.Context) {
 
 func output(writer io.Writer, config *Config, dependencies []*Dependency, errors []error) {
 	for _, err := range errors {
-		fmt.Fprintf(writer, "# "+err.Error()+"\n")
+		fmt.Fprintf(os.Stderr, err.Error()+"\n")
 	}
 	switch config.Format {
 	case "dot":
