@@ -1,1 +1,1 @@
-# . is a directory. Specify source code files. Or you mean --recursive (-r)?
+. is a directory. Specify source code files. Or you mean --recursive (-r)?

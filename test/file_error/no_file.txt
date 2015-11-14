@@ -1,4 +1,5 @@
-# lstat 5: no such file or directory
+4 is a directory. Specify source code files. Or you mean --recursive (-r)?
+lstat 5: no such file or directory
 1 2
 1 3
 2 3
