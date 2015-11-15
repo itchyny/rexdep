@@ -53,6 +53,22 @@ The rexdep command, on the other hand, simply checks the source code by a regula
 It may not as powerful as AST-level tools, but the idea is very simple and can be used for many languages.
 Now you understand what rexdep stands for; *roughly extract dependency*.
 
+## Installation
+### Homebrew
+```bash
+ $ brew tap itchyny/rexdep
+ $ brew install rexdep
+```
+
+### Download binary from GitHub Releases
+[Releases・itchyny/rexdep - GitHub](https://github.com/itchyny/rexdep/releases)
+
+### Build from source
+```bash
+ $ go get github.com/itchyny/rexdep
+ $ go install github.com/itchyny/rexdep
+```
+
 ## Examples
 ### [Git](https://github.com/git/git)
 ```sh
@@ -89,27 +105,10 @@ We can flexibly limit the modules by specific words.
 ### [lens](https://github.com/ekmett/lens)
 ```sh
  $ git clone --depth 1 https://github.com/ekmett/lens
- $ rexdep --pattern '^\s*import +(?:qualified +)?(\S+Lens\S*)' --module '^module +(\S+Lens\S*)' --trimext --format dot --recursive ./lens/src/ | dot -Tpng -o lens.png
+ $ rexdep --pattern '^\s*import +(?:qualified +)?(\S+Lens\S*)' --module '^module +(\S+Lens\S*)' --format dot --recursive ./lens/src/ | dot -Tpng -o lens.png
 ```
 [![lens](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/lens-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/lens.png)
 It is very fun to see the dependency graph of cool libraries like lens, isn't it?
-
-## Installation
-### Download binary from GitHub Releases
-[Releases・itchyny/rexdep - GitHub](https://github.com/itchyny/rexdep/releases)
-
-### Build from source
-```bash
- $ go get github.com/itchyny/rexdep
- $ go install github.com/itchyny/rexdep
-```
-
-## Usage
-To be documented.
-
-```sh
- $ rexdep --pattern 'import (\S+)' FILES
-```
 
 ## Author
 itchyny (https://github.com/itchyny)
