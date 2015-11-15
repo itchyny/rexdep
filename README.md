@@ -2,7 +2,9 @@
 ### Roughly extract dependency from source code
 The rexdep command is a tool for extracting dependency relation from software.
 
-When we see a large project, we sometimes want to understand the code structure intuitively.
+[![rexdep](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/rexdep.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/rexdep.png)
+
+When we see a large project, we want to understand the code structure intuitively.
 We sometimes join a project at work, the project has lots of source code.
 We sometimes want to make pull requests to famous OSS software, but the software is too large.
 How can we understand the file structure of a huge project without reading through the software?
@@ -20,6 +22,7 @@ The idea of rexdep is very simple; in many cases, we can extract the module name
 Let me explain by a simple example in C language, where we want to extract the dependency relations between the files, rather than modules.
 Consider a situation that `test1.c` includes `test2.c` and `test3.c`.
 ```c
+/* This is test1.c */
 #include "test2.c"
 #include "test3.c"
 
@@ -97,7 +100,7 @@ It is difficult to extract dependency relation from source codes written in Go b
 ### [pandoc](https://github.com/jgm/pandoc)
 ```sh
  $ git clone --depth 1 https://github.com/jgm/pandoc
- $ rexdep --pattern '^\s*import +(?:qualified +)?([[:alnum:].]+Pandoc[[:alnum:].]*)' --module '^module +([[:alnum:].]+Pandoc[[:alnum:].]*)' --trimext --format dot --recursive ./pandoc/src/ | dot -Tpng -o pandoc.png
+ $ rexdep --pattern '^\s*import +(?:qualified +)?([[:alnum:].]+Pandoc[[:alnum:].]*)' --module '^module +([[:alnum:].]+Pandoc[[:alnum:].]*)' --format dot --recursive ./pandoc/src/ | dot -Tpng -o pandoc.png
 ```
 [![pandoc](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/pandoc-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/pandoc.png)
 We can flexibly limit the modules by specific words.
