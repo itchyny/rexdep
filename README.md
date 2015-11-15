@@ -103,6 +103,7 @@ digraph "graph" {
  $ rexdep --pattern 'import +(\S+)' --format dot test1 | dot -Tpng -o test.png
 ```
 ![example](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/example-1.png)
+
 This is the very basic example of `rexdep`.
 You can also change the output format to JSON,
 ```
