@@ -110,6 +110,9 @@ We can flexibly limit the modules by specific words.
 [![lens](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/lens-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/lens.png)
 It is very fun to see the dependency graph of cool libraries like lens, isn't it?
 
+## Bug Tracker
+Report bug at [Issues・itchyny/rexdep - GitHub](https://github.com/itchyny/rexdep/issues).
+
 ## Author
 itchyny (https://github.com/itchyny)
 
