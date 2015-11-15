@@ -45,7 +45,7 @@ For the above example, we can use rexdep to extract the dependency between the C
 test1.c test2.c
 test1.c test3.c
 ```
-The captured string is regarded as the filenames included by the source code.
+The captured string is regarded as the file names included by the source code.
 We can of course specify multiple files.
 We can also specify directories and rexdep recursively investigate the source files under the subdirectories.
 Allowing the user to specify by regular expression, it can be used for various languages; `^\s*#include\s*[<"](\S+)[>"]` for C language or `^\s*import +(?:qualified +)?([[:alnum:].]+)` for Haskell language.
@@ -71,6 +71,50 @@ Now you understand what rexdep stands for; *roughly extract dependency*.
  $ go get github.com/itchyny/rexdep
  $ go install github.com/itchyny/rexdep
 ```
+
+## Usage
+### Basic usage: --pattern, --format
+Consider the following sample file.
+```
+ $ cat test1
+import test2
+import test3
+```
+We want to extract the dependency relation from this file `test1`.
+Specify `--pattern` argument properly.
+```sh
+ $ rexdep --pattern 'import +(\S+)' test1
+test1 test2
+test1 test3
+```
+The output result shows that `test1` depends on `test2` and `test3`.
+Each line contains the space separated filenames.
+The captured string in the `--pattern` argument is interpreted as the module name imported by each file.
+The regular expression is compiled to `Regexp` type of Go language, so refer to the [document](https://golang.org/s/re2syntax) for regexp syntax or try `go doc regexp/syntax`.
+
+We can change the format of the output.
+Specifically, the rexdep command works well with dot language.
+```sh
+ $ rexdep --pattern 'import +(\S+)' --format dot test1
+digraph "graph" {
+  "test1" -> "test2";
+  "test1" -> "test3";
+}
+ $ rexdep --pattern 'import +(\S+)' --format dot test1 | dot -Tpng -o test.png
+```
+![example](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/example-1.png)
+This is the very basic example of `rexdep`.
+You can also change the output format to JSON,
+```
+ $ rexdep --pattern 'import +(\S+)' --format json test1
+{
+  "test1": [
+    "test2",
+    "test3"
+  ]
+}
+```
+which may be piped to [jq](https://stedolan.github.io/jq/) command.
 
 ## Examples
 ### [Git](https://github.com/git/git)
