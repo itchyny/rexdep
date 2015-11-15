@@ -30,7 +30,7 @@ var Flags = []cli.Flag{
 		Usage: "Recursively inspect files in subdirectories",
 	},
 	cli.StringFlag{
-		Name:  "format, f",
+		Name:  "format",
 		Value: "",
 		Usage: "Specify the format of the output; `default', `dot', `csv' and `json' are available.",
 	},
