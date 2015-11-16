@@ -38,6 +38,11 @@ var Flags = []cli.Flag{
 		Name:  "trimext, t",
 		Usage: "Trim the file extension.",
 	},
+	cli.StringFlag{
+		Name:  "output, o",
+		Value: "",
+		Usage: "Output file. If omitted, stdout is used.",
+	},
 	cli.BoolFlag{
 		Name:  "help, h",
 		Usage: "Shows the help of the command",

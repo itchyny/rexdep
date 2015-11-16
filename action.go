@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 
 	"github.com/codegangsta/cli"
@@ -17,23 +16,23 @@ func action(ctx *cli.Context) {
 		cli.ShowAppHelp(ctx)
 	} else {
 		dependencies, errors := gatherDependency(config)
-		output(ctx.App.Writer, config, dependencies, errors)
+		output(config, dependencies, errors)
 	}
 }
 
-func output(writer io.Writer, config *Config, dependencies []*Dependency, errors []error) {
+func output(config *Config, dependencies []*Dependency, errors []error) {
 	for _, err := range errors {
 		fmt.Fprintf(os.Stderr, err.Error()+"\n")
 	}
 	switch config.Format {
 	case "dot":
-		outputDot(writer, dependencies)
+		outputDot(config.Output, dependencies)
 	case "csv":
-		outputCsv(writer, dependencies)
+		outputCsv(config.Output, dependencies)
 	case "json":
-		outputJson(writer, dependencies)
+		outputJson(config.Output, dependencies)
 	default:
-		outputDefault(writer, dependencies)
+		outputDefault(config.Output, dependencies)
 	}
 }
 

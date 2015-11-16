@@ -2,6 +2,8 @@ package main
 
 import (
 	"errors"
+	"io"
+	"os"
 	"regexp"
 
 	"github.com/codegangsta/cli"
@@ -16,6 +18,7 @@ type Config struct {
 	Paths     []string
 	Recursive bool
 	Trimext   bool
+	Output    io.Writer
 }
 
 func makeConfig(ctx *cli.Context) (*Config, []error) {
@@ -59,6 +62,17 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 		end = nil
 	}
 
+	output := ctx.App.Writer
+	outfile := ctx.GlobalString("output")
+	if outfile != "" {
+		file, err := os.Create(outfile)
+		if err != nil {
+			errs = append(errs, errors.New("Cannot create the output file: "+outfile+"\n\n"))
+		} else {
+			output = file
+		}
+	}
+
 	paths := ctx.Args()
 	if len(paths) == 0 {
 		errs = append(errs, errors.New("Specify source codes.\n\n"))
@@ -77,6 +91,7 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 		Paths:     paths,
 		Recursive: ctx.GlobalBool("recursive"),
 		Trimext:   ctx.GlobalBool("trimext"),
+		Output:    output,
 	}, nil
 }
 
