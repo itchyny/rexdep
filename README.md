@@ -30,7 +30,7 @@ int main...
 ```
 The file `test1.c` depends on `test2.c` and `test3.c`.
 This relation can be easily extracted using a simple regular expression.
-```
+```bash
  $ grep '^#include ".*"' test1.c | sed 's/^#include *"\(.*\)"/\1/'
 test2.c
 test3.c
@@ -40,7 +40,7 @@ For example, `import` keyword is used in Python and Haskell and `require` in Rub
 
 The rexdep command enables us to specify the `pattern`, the regular expression to extract the module dependency from source codes.
 For the above example, we can use rexdep to extract the dependency between the C source codes.
-```
+```bash
  $ rexdep --pattern '^\s*#include\s*"(\S+)"' test1.c
 test1.c test2.c
 test1.c test3.c
@@ -75,56 +75,65 @@ Now you understand what rexdep stands for; *roughly extract dependency*.
 ## Usage
 ### Basic usage: --pattern, --format
 Consider the following sample file.
-```
+```bash
  $ cat test1
 import test2
 import test3
 ```
 We want to extract the dependency relation from this file `test1`.
-Specify `--pattern` argument properly.
-```sh
+Specify `--pattern` the regular expression to extract the module names it imports.
+```bash
  $ rexdep --pattern 'import +(\S+)' test1
 test1 test2
 test1 test3
 ```
 The output result shows that `test1` depends on `test2` and `test3`.
-Each line contains the space separated filenames.
-The captured string in the `--pattern` argument is interpreted as the module name imported by each file.
-The regular expression is compiled to `Regexp` type of Go language, so refer to the [document](https://golang.org/s/re2syntax) for regexp syntax or try `go doc regexp/syntax`.
+Each line contains the space separated module names.
+The captured strings in the `--pattern` argument are interpreted as the module names imported by each file.
+The regular expression is compiled to `Regexp` type of Go language, so refer to the [document](https://golang.org/s/re2syntax) for the regexp syntax or try `go doc regexp/syntax`.
 
-We can use the rexdep command to output in the dot language.
-```sh
+We can use the rexdep command to output in the dot language
+```bash
  $ rexdep --pattern 'import +(\S+)' --format dot test1
 digraph "graph" {
   "test1" -> "test2";
   "test1" -> "test3";
 }
+```
+and it works perfectly with graphviz (dot command).
+```bash
  $ rexdep --pattern 'import +(\S+)' --format dot test1 | dot -Tpng -o test.png
 ```
 ![example](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/example-1.png)
 
 Also, it works for multiple files.
-```sh
- $ rexdep --pattern 'import +(\S+)' --format dot test*
+```bash
+ $ rexdep --pattern 'import +(\S+)' --format dot test{1,2,3,4}
 digraph "graph" {
   "test1" -> "test2";
   "test1" -> "test3";
   "test2" -> "test4";
   "test3" -> "test4";
 }
- $ rexdep --pattern 'import +(\S+)' --format dot test* | dot -Tpng -o test.png
+ $ rexdep --pattern 'import +(\S+)' --format dot test{1,2,3,4} | dot -Tpng -o test.png
 ```
 ![example](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/example-2.png)
 
-This is the very basic example of `rexdep`.
+This is a basic example of rexdep.
 
 You can also change the output format to JSON,
-```
- $ rexdep --pattern 'import +(\S+)' --format json test1
+```bash
+ $ rexdep --pattern 'import +(\S+)' --format json test{1,2,3,4}
 {
   "test1": [
     "test2",
     "test3"
+  ],
+  "test2": [
+    "test4"
+  ],
+  "test3": [
+    "test4"
   ]
 }
 ```
@@ -153,7 +162,7 @@ We notice that the structure is flat and many files include `vim.h`.
  $ rexdep --pattern '"github.com/(?:hashicorp/consul/(?:\S+/)*)?(\S+)"' --start '^import +["(]' --end '^\)$|^import +"' --format dot --trimext $(find ./consul/ -name '*.go' | grep -v '_test') | dot -Tpng -o consul.png
 ```
 [![consul](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/consul-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/consul.png)
-It is difficult to extract dependency relation from source codes written in Go because we can use functions from the other codes at the same directory without writing import. We can skip the directories by `(?:\S/)*`. The `rexdep` command extract imports between the lines matched by the `start` and `end` arguments.
+It is difficult to extract dependency relation from source codes written in Go because we can use functions from the other codes at the same directory without writing import. We can skip the directories by `(?:\S/)*`. The rexdep command extract imports between the lines matched by the `start` and `end` arguments.
 
 ### [pandoc](https://github.com/jgm/pandoc)
 ```sh
