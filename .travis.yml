@@ -7,7 +7,6 @@ install:
 - go get github.com/laher/goxc
 - go get github.com/aryann/difflib
 script:
-- goxc -t
 - make test
 - make cross
 deploy:
