@@ -17,7 +17,6 @@ type Config struct {
 	Format    string
 	Paths     []string
 	Recursive bool
-	Trimext   bool
 	Output    io.Writer
 }
 
@@ -90,7 +89,6 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 		Format:    ctx.GlobalString("format"),
 		Paths:     paths,
 		Recursive: ctx.GlobalBool("recursive"),
-		Trimext:   ctx.GlobalBool("trimext"),
 		Output:    output,
 	}, nil
 }

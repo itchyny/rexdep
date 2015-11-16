@@ -34,10 +34,6 @@ var Flags = []cli.Flag{
 		Value: "",
 		Usage: "Specify the format of the output; `default', `dot', `csv' and `json' are available.",
 	},
-	cli.BoolFlag{
-		Name:  "trimext, t",
-		Usage: "Trim the file extension.",
-	},
 	cli.StringFlag{
 		Name:  "output, o",
 		Value: "",

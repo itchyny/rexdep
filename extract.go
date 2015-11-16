@@ -6,7 +6,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"strings"
 )
 
 func extract(name string, config *Config) ([]*Dependency, []error) {
@@ -44,9 +43,6 @@ func extractFile(name string, config *Config) ([]*Dependency, []error) {
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	module := path.Base(name)
-	if config.Trimext {
-		module = strings.TrimSuffix(module, filepath.Ext(module))
-	}
 	return extractCore(module, scanner, config), nil
 }
 
