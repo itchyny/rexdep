@@ -26,13 +26,11 @@ func extract(name string, config *Config) ([]*Dependency, []error) {
 				return nil
 			})
 			return dependencies, errs
-		} else {
-			err := errors.New(name + " is a directory. Specify source code files. Or you mean --recursive (-r)?")
-			return nil, []error{err}
 		}
-	} else {
-		return extractFile(name, config)
+		err := errors.New(name + " is a directory. Specify source code files. Or you mean --recursive (-r)?")
+		return nil, []error{err}
 	}
+	return extractFile(name, config)
 }
 
 func extractFile(name string, config *Config) ([]*Dependency, []error) {
