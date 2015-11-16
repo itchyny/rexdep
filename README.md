@@ -92,8 +92,7 @@ Each line contains the space separated filenames.
 The captured string in the `--pattern` argument is interpreted as the module name imported by each file.
 The regular expression is compiled to `Regexp` type of Go language, so refer to the [document](https://golang.org/s/re2syntax) for regexp syntax or try `go doc regexp/syntax`.
 
-We can change the format of the output.
-Specifically, the rexdep command works well with dot language.
+We can use the rexdep command to output in the dot language.
 ```sh
  $ rexdep --pattern 'import +(\S+)' --format dot test1
 digraph "graph" {
@@ -104,7 +103,21 @@ digraph "graph" {
 ```
 ![example](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/example-1.png)
 
+Also, it works for multiple files.
+```sh
+ $ rexdep --pattern 'import +(\S+)' --format dot test*
+digraph "graph" {
+  "test1" -> "test2";
+  "test1" -> "test3";
+  "test2" -> "test4";
+  "test3" -> "test4";
+}
+ $ rexdep --pattern 'import +(\S+)' --format dot test* | dot -Tpng -o test.png
+```
+![example](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/example-2.png)
+
 This is the very basic example of `rexdep`.
+
 You can also change the output format to JSON,
 ```
  $ rexdep --pattern 'import +(\S+)' --format json test1
