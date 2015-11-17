@@ -15,37 +15,37 @@ func action(ctx *cli.Context) {
 		}
 		cli.ShowAppHelp(ctx)
 	} else {
-		dependencies, errors := gatherDependency(config)
-		output(config, dependencies, errors)
+		dependency, errors := gatherDependency(config)
+		output(config, dependency, errors)
 	}
 }
 
-func output(config *Config, dependencies []*Dependency, errors []error) {
+func output(config *Config, dependency *Dependency, errors []error) {
 	for _, err := range errors {
 		fmt.Fprintf(os.Stderr, err.Error()+"\n")
 	}
 	switch config.Format {
 	case "dot":
-		outputDot(config.Output, dependencies)
+		outputDot(config.Output, dependency)
 	case "csv":
-		outputCsv(config.Output, dependencies)
+		outputCsv(config.Output, dependency)
 	case "json":
-		outputJson(config.Output, dependencies)
+		outputJSON(config.Output, dependency)
 	default:
-		outputDefault(config.Output, dependencies)
+		outputDefault(config.Output, dependency)
 	}
 }
 
-func gatherDependency(config *Config) ([]*Dependency, []error) {
+func gatherDependency(config *Config) (*Dependency, []error) {
 	var errors []error
-	var dependencies []*Dependency
+	dependency := newDependency()
 	for _, path := range config.Paths {
 		deps, err := extract(path, config)
 		if err != nil {
 			errors = append(errors, err...)
 		} else {
-			dependencies = append(dependencies, deps...)
+			dependency.concat(deps)
 		}
 	}
-	return dependencies, errors
+	return dependency, errors
 }

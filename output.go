@@ -3,42 +3,43 @@ package main
 import (
 	"fmt"
 	"io"
+	"sort"
 )
 
-func outputDefault(writer io.Writer, dependencies []*Dependency) {
-	for _, dependency := range dependencies {
-		for _, to := range dependency.To {
-			fmt.Fprintf(writer, "%s %s\n", dependency.From, to)
+func outputDefault(writer io.Writer, dependency *Dependency) {
+	for _, module := range dependency.modules {
+		for _, to := range keys(dependency.relation[module]) {
+			fmt.Fprintf(writer, "%s %s\n", module, to)
 		}
 	}
 }
 
-func outputDot(writer io.Writer, dependencies []*Dependency) {
+func outputDot(writer io.Writer, dependency *Dependency) {
 	fmt.Fprintf(writer, "digraph \"graph\" {\n")
-	for _, dependency := range dependencies {
-		for _, to := range dependency.To {
-			fmt.Fprintf(writer, "  \"%s\" -> \"%s\";\n", dependency.From, to)
+	for _, module := range dependency.modules {
+		for _, to := range keys(dependency.relation[module]) {
+			fmt.Fprintf(writer, "  \"%s\" -> \"%s\";\n", module, to)
 		}
 	}
 	fmt.Fprintf(writer, "}\n")
 }
 
-func outputCsv(writer io.Writer, dependencies []*Dependency) {
-	for _, dependency := range dependencies {
-		for _, to := range dependency.To {
-			fmt.Fprintf(writer, "%s,%s\n", dependency.From, to)
+func outputCsv(writer io.Writer, dependency *Dependency) {
+	for _, module := range dependency.modules {
+		for _, to := range keys(dependency.relation[module]) {
+			fmt.Fprintf(writer, "%s,%s\n", module, to)
 		}
 	}
 }
 
-func outputJson(writer io.Writer, dependencies []*Dependency) {
+func outputJSON(writer io.Writer, dependency *Dependency) {
 	fmt.Fprintf(writer, "{")
-	for i, dependency := range dependencies {
+	for i, module := range dependency.modules {
 		if i > 0 {
 			fmt.Fprintf(writer, ",")
 		}
-		fmt.Fprintf(writer, "\n  \"%s\": [", dependency.From)
-		for j, to := range dependency.To {
+		fmt.Fprintf(writer, "\n  \"%s\": [", module)
+		for j, to := range keys(dependency.relation[module]) {
 			if j > 0 {
 				fmt.Fprintf(writer, ",")
 			}
@@ -47,4 +48,13 @@ func outputJson(writer io.Writer, dependencies []*Dependency) {
 		fmt.Fprintf(writer, "\n  ]")
 	}
 	fmt.Fprintf(writer, "\n}\n")
+}
+
+func keys(m map[string]bool) []string {
+	var xs []string
+	for x := range m {
+		xs = append(xs, x)
+	}
+	sort.Strings(xs)
+	return xs
 }

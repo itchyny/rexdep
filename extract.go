@@ -8,24 +8,24 @@ import (
 	"path/filepath"
 )
 
-func extract(name string, config *Config) ([]*Dependency, []error) {
+func extract(name string, config *Config) (*Dependency, []error) {
 	fileinfo, err := os.Lstat(name)
 	if err != nil {
 		return nil, []error{err}
 	}
 	if fileinfo.IsDir() {
 		if config.Recursive {
-			var dependencies []*Dependency
+			dependency := newDependency()
 			var errs []error
 			filepath.Walk(name, func(name string, info os.FileInfo, err error) error {
 				if err == nil && !info.IsDir() {
 					deps, err := extractFile(name, config)
 					errs = append(errs, err...)
-					dependencies = append(dependencies, deps...)
+					dependency.concat(deps)
 				}
 				return nil
 			})
-			return dependencies, errs
+			return dependency, errs
 		}
 		err := errors.New(name + " is a directory. Specify source code files. Or you mean --recursive (-r)?")
 		return nil, []error{err}
@@ -33,7 +33,7 @@ func extract(name string, config *Config) ([]*Dependency, []error) {
 	return extractFile(name, config)
 }
 
-func extractFile(name string, config *Config) ([]*Dependency, []error) {
+func extractFile(name string, config *Config) (*Dependency, []error) {
 	file, err := os.Open(name)
 	if err != nil {
 		return nil, []error{err}
@@ -44,10 +44,8 @@ func extractFile(name string, config *Config) ([]*Dependency, []error) {
 	return extractCore(module, scanner, config), nil
 }
 
-func extractCore(module string, scanner *bufio.Scanner, config *Config) []*Dependency {
-	dependency := &Dependency{From: module}
-	dependencies := []*Dependency{}
-	appended := make(map[string]bool)
+func extractCore(module string, scanner *bufio.Scanner, config *Config) *Dependency {
+	dependency := newDependency()
 	enable := config.Start == nil
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -56,19 +54,14 @@ func extractCore(module string, scanner *bufio.Scanner, config *Config) []*Depen
 		}
 		if config.Module != nil {
 			if matches := config.Module.FindStringSubmatch(line); matches != nil {
-				dependency = &Dependency{From: matches[len(matches)-1]}
-				appended = make(map[string]bool)
+				module = matches[len(matches)-1]
 			}
 		}
 		if enable {
 			if matches := config.Pattern.FindStringSubmatch(line); len(matches) >= 1 {
 				for _, name := range matches[1:] {
-					if name != "" && !appended[name] {
-						if dependency.To == nil {
-							dependencies = append(dependencies, dependency)
-						}
-						dependency.To = append(dependency.To, name)
-						appended[name] = true
+					if name != "" {
+						dependency.add(module, name)
 					}
 				}
 			}
@@ -77,5 +70,5 @@ func extractCore(module string, scanner *bufio.Scanner, config *Config) []*Depen
 			enable = false
 		}
 	}
-	return dependencies
+	return dependency
 }
