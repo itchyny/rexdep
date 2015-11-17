@@ -159,10 +159,10 @@ We notice that the structure is flat and many files include `vim.h`.
 ### [consul](https://github.com/hashicorp/consul)
 ```sh
  $ git clone --depth 1 https://github.com/hashicorp/consul
- $ rexdep --pattern '"github.com/(?:hashicorp/consul/(?:\S+/)*)?(\S+)"' --start '^import +["(]' --end '^\)$|^import +"' --format dot --trimext $(find ./consul/ -name '*.go' | grep -v '_test') | dot -Tpng -o consul.png
+ $ rexdep --pattern '"github.com/(?:hashicorp/consul/(?:\S+/)*)?(\S+)"' --module '^package +(\S+)' --start '^import +["(]' --end '^\)$|^import +"' --format dot $(find ./consul/ -name '*.go' | grep -v '_test') | dot -Tpng -o consul.png
 ```
 [![consul](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/consul-1.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/consul.png)
-It is difficult to extract dependency relation from source codes written in Go because we can use functions from the other codes at the same directory without writing import. We can skip the directories by `(?:\S/)*`. The rexdep command extract imports between the lines matched by the `start` and `end` arguments.
+It is difficult to extract dependency relation between files from Go source codes. We can use functions from the other files at the same directory without writing import. Instead, we can extract dependency relation between packages. The rexdep command extract the imported packages between the lines matched by the `start` and `end` arguments.
 
 ### [pandoc](https://github.com/jgm/pandoc)
 ```sh
