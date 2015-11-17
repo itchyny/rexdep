@@ -31,9 +31,10 @@ func TestMain(t *testing.T) {
 					t.Errorf("FAIL: error on reading output file: " + outfile)
 				} else {
 					diffs := difflib.Diff(strings.Split(stderr.String()+string(output), "\n"), strings.Split(string(expected), "\n"))
+					help := strings.Contains(string(output), "NAME:")
 					differs := false
 					for _, diff := range diffs {
-						differs = differs || diff.Delta == difflib.RightOnly
+						differs = differs || (help && diff.Delta == difflib.RightOnly || !help && diff.Delta != difflib.Common)
 					}
 					if differs {
 						buf := bytes.NewBufferString("")
