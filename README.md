@@ -1,6 +1,7 @@
 # rexdep [![Travis Build Status](https://travis-ci.org/itchyny/rexdep.svg?branch=master)](https://travis-ci.org/itchyny/rexdep)
 ### Roughly extract dependency from source code
 The rexdep command is a tool for extracting dependency relation from software.
+The command enables us to see the dependency relation among files, modules or packages written in any programming languages.
 
 [![rexdep](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/rexdep.png)](https://raw.githubusercontent.com/wiki/itchyny/rexdep/image/rexdep.png)
 
@@ -51,6 +52,7 @@ We can also specify directories and rexdep recursively investigate the source fi
 Allowing the user to specify by regular expression, it can be used for various languages; `^\s*#include\s*[<"](\S+)[>"]` for C language or `^\s*import +(?:qualified +)?([[:alnum:].]+)` for Haskell language.
 
 There are some other tools targeting on specific languages.
+For example, there are some UML class diagram generating tools for object-oriented languages.
 They investigate source codes at the level of abstract syntax tree and therefore much powerful.
 The rexdep command, on the other hand, simply checks the source code by a regular expression given by the user.
 It may not as powerful as AST-level tools, but the idea is very simple and can be used for many languages.
@@ -138,6 +140,95 @@ You can also change the output format to JSON,
 }
 ```
 which may be piped to [jq](https://stedolan.github.io/jq/) command.
+
+### Module name: --module
+The rexdep command uses the filenames to identify each file.
+This is useful for C language but not for many other languages.
+For example, we write `module ModuleName where` in Haskell.
+```bash
+ $ cat Foo.hs
+module Foo where
+import Bar
+import System.Directory
+ $ cat Bar.hs
+module Bar where
+import Control.Applicative
+import System.IO
+ $ rexdep --pattern 'import (\S+)' Foo.hs Bar.hs
+Foo.hs Bar
+Foo.hs System.Directory
+Bar.hs Control.Applicative
+Bar.hs System.IO
+```
+The output looks bad and we will not be able to obtain the dependency graph we really want.
+
+We have to tell rexdep to extract the module name as well.
+The rexdep command enables us to specify the module name pattern.
+We specify a regular expression to the argument of --module.
+```bash
+ $ rexdep --pattern 'import (\S+)' --module 'module (\S+)' Foo.hs Bar.hs
+Foo Bar
+Foo System.Directory
+Bar Control.Applicative
+Bar System.IO
+```
+Now it looks fine.
+
+A file sometimes contains multiple modules.
+When rexdep finds a new module in the file, the following packages will be regarded as imported by the new module.
+For example, let us consider the following sample file.
+```bash
+ $ cat sample1
+module A
+import B
+import C
+
+module B
+import C
+
+module C
+import D
+```
+In this example, three modules exist in one file.
+The following command works nice for this sample.
+```bash
+ $ rexdep --pattern 'import (\S+)' --module 'module (\S+)' sample1
+A B
+A C
+B C
+C D
+```
+Let me show another example.
+```bash
+ $ cat sample2
+A depends on B, C and D.
+B depends on C and D.
+C depends on D.
+D does not depend on other modules.
+```
+Can we extract the relations between them?
+```bash
+ $ rexdep --pattern 'depends on ([A-Z]+)(?:, ([A-Z]+))?(?:, ([A-Z]+))?(?: and ([A-Z]+))?' --module '^([A-Z]+) depends on ' sample2
+A B
+A C
+A D
+B C
+B D
+C D
+```
+The rexdep command enables the user to specify a regular expression and still seems to be useful for pretty complicated pattern like the above example.
+
+### Extraction range: --start, --end
+To be documented.
+
+### Output: --format, --output
+We can change the output format with --format option.
+The rexdep command outputs the module names each line with a space by default.
+In order to see the dependency graph, which is a very common case, you can specify `--format dot` and pipe the output to the dot command.
+You can also use `--format json` and pipe to the jq command.
+
+The rexdep uses the standard output to print the result.
+When you specify a filename to the --output option, the rexdep command outputs the result to the specified file.
 
 ## Examples
 ### [Git](https://github.com/git/git)
