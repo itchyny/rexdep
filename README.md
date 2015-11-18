@@ -1,5 +1,5 @@
 # rexdep [![Travis Build Status](https://travis-ci.org/itchyny/rexdep.svg?branch=master)](https://travis-ci.org/itchyny/rexdep)
-### Roughly extract dependency from source code
+### Roughly extract dependency relation from source code
 The rexdep command is a tool for extracting dependency relation from software.
 The command enables us to see the dependency relation among files, modules or packages written in any programming languages.
 
@@ -17,7 +17,7 @@ Extracting the module dependency enables us to understand the relationship among
 We can use the dependency graph to read the software top down or bottom up.
 We sometimes find the core modules in the project because such modules are depended by many other modules.
 
-So, how can we extract dependency relationship from a code base of software?
+So, how can we extract dependency relation from a code base of software?
 
 The idea of rexdep is very simple; in many cases, we can extract the module names by a regular expression.
 Let me explain by a simple example in C language, where we want to extract the dependency relations between the files, rather than modules.
@@ -56,7 +56,7 @@ For example, there are some UML class diagram generating tools for object-orient
 They investigate source codes at the level of abstract syntax tree and therefore much powerful.
 The rexdep command, on the other hand, simply checks the source code by a regular expression given by the user.
 It may not as powerful as AST-level tools, but the idea is very simple and can be used for many languages.
-Now you understand what rexdep stands for; *roughly extract dependency*.
+Now you understand what rexdep stands for; *roughly extract dependency relation*.
 
 ## Installation
 ### Homebrew
