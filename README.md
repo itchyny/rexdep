@@ -217,6 +217,34 @@ B C
 B D
 C D
 ```
+This example does not look like a practical use case.
+However, consider the following Makefile.
+```make
+ $ cat Makefile
+all: clean build
+
+build: deps
+	go build
+
+install: deps
+	go install
+
+deps:
+	go get -d -v .
+
+clean:
+	go clean
+
+.PHONY: build deps clean
+```
+Now rexdep can extract the target dependency relation from this Makefile.
+```sh
+ $ rexdep --pattern '^[^.][^:]+: +(\S+)(?: +(\S+))?(?: +(\S+))?' --module '^([^.][^:]+):' Makefile
+all build
+all clean
+build deps
+install deps
+```
 The rexdep command enables the user to specify a regular expression and still seems to be useful for pretty complicated pattern like the above example.
 
 ### Extraction range: --start, --end
