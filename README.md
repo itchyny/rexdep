@@ -145,6 +145,7 @@ which may be piped to [jq](https://stedolan.github.io/jq/) command.
 The rexdep command uses the filenames to identify each file.
 This is useful for C language but not for many other languages.
 For example, we write `module ModuleName where` in Haskell.
+Consider the following two files.
 ```bash
  $ cat Foo.hs
 module Foo where
@@ -154,13 +155,16 @@ import System.Directory
 module Bar where
 import Control.Applicative
 import System.IO
+```
+Firstly, we try the following command.
+```bash
  $ rexdep --pattern 'import (\S+)' Foo.hs Bar.hs
 Foo.hs Bar
 Foo.hs System.Directory
 Bar.hs Control.Applicative
 Bar.hs System.IO
 ```
-The output looks bad and we will not be able to obtain the dependency graph we really want.
+The result looks bad and we will not be able to obtain the dependency graph we really want.
 
 We have to tell rexdep to extract the module name as well.
 The rexdep command enables us to specify the module name pattern.
@@ -206,7 +210,7 @@ B depends on C and D.
 C depends on D.
 D does not depend on other modules.
 ```
-Can we extract the relations between them?
+Can we extract the relations between them? With rexdep, the answer is yes.
 ```bash
  $ rexdep --pattern 'depends on ([A-Z]+)(?:, ([A-Z]+))?(?:, ([A-Z]+))?(?: and ([A-Z]+))?' --module '^([A-Z]+) depends on ' sample2
 A B
