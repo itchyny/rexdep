@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"sort"
+	"strconv"
 )
 
 func outputDefault(writer io.Writer, dependency *Dependency) {
@@ -18,7 +19,7 @@ func outputDot(writer io.Writer, dependency *Dependency) {
 	fmt.Fprintf(writer, "digraph \"graph\" {\n")
 	for _, module := range dependency.modules {
 		for _, to := range keys(dependency.relation[module]) {
-			fmt.Fprintf(writer, "  \"%s\" -> \"%s\";\n", module, to)
+			fmt.Fprintf(writer, "  %s -> %s;\n", strconv.Quote(module), strconv.Quote(to))
 		}
 	}
 	fmt.Fprintf(writer, "}\n")
@@ -27,7 +28,7 @@ func outputDot(writer io.Writer, dependency *Dependency) {
 func outputCsv(writer io.Writer, dependency *Dependency) {
 	for _, module := range dependency.modules {
 		for _, to := range keys(dependency.relation[module]) {
-			fmt.Fprintf(writer, "%s,%s\n", module, to)
+			fmt.Fprintf(writer, "%s,%s\n", strconv.Quote(module), strconv.Quote(to))
 		}
 	}
 }
@@ -38,12 +39,12 @@ func outputJSON(writer io.Writer, dependency *Dependency) {
 		if i > 0 {
 			fmt.Fprintf(writer, ",")
 		}
-		fmt.Fprintf(writer, "\n  \"%s\": [", module)
+		fmt.Fprintf(writer, "\n  %s: [", strconv.Quote(module))
 		for j, to := range keys(dependency.relation[module]) {
 			if j > 0 {
 				fmt.Fprintf(writer, ",")
 			}
-			fmt.Fprintf(writer, "\n    \"%s\"", to)
+			fmt.Fprintf(writer, "\n    %s", strconv.Quote(to))
 		}
 		fmt.Fprintf(writer, "\n  ]")
 	}
