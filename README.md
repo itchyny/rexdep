@@ -248,7 +248,76 @@ install deps
 The rexdep command enables the user to specify a regular expression and still seems to be useful for pretty complicated pattern like the above example.
 
 ### Extraction range: --start, --end
-To be documented.
+The rexdep command checks the regular expression of `--pattern` against each line of files.
+However, it is sometimes difficult to extract from multiline syntax.
+Here's an example.
+```go
+ $ cat sample.go
+package main
+
+// "foo"
+import (
+	"fmt"
+	"os"
+
+	"github.com/codegangsta/cli"
+)
+
+func main() {
+	fmt.Printf("Hello")
+	// ...
+```
+The rexdep enables you to specify the range to extract from.
+```
+ $ rexdep --pattern '"(\S+)"' --module '^package +(\S+)' --start '^import +\($' --end '^\)$' sample.go
+main fmt
+main github.com/codegangsta/cli
+main os
+```
+When the argument of `--start` is specified, rexdep finds the line which matches to the regular expression.
+After it hits the starting line, it turns the internal enabled flag on and starts the extraction with the regular expression of `--patern`.
+Then it finds the ending line, it turns the enabled flag off and stops the extraction procedure.
+
+Both starting and ending lines are inclusive.
+For example, see the following example.
+```scala
+object Foo extends Bar with Baz with Qux {
+  // random comment: X extends Y
+  // random comment: Y with Z
+}
+
+object Qux
+  extends Quux
+     with Quuy
+     with Quuz {
+     with Qyyy
+}
+```
+Firstly, we try with only `--pattern` and `--module` to extract the inheritance relation.
+```
+ $ rexdep --pattern '(?:(?:extends|with) +([[:alnum:]]+))(?: +(?:extends|with) +([[:alnum:]]+))?(?: +(?:extends|with) +([[:alnum:]]+))?' --module '^object +(\S+)' sample.scala
+Foo Bar
+Foo Baz
+Foo Qux
+Foo Y
+Foo Z
+Qux Quux
+Qux Quuy
+Qux Quuz
+Qux Qyyy
+```
+This result is a failure; it keeps the extraction procedure inside bodies of the objects.
+For this example, `--start` and `--end` work well.
+```sh
+ $ rexdep --pattern '(?:(?:extends|with) +([[:alnum:]]+))(?: +(?:extends|with) +([[:alnum:]]+))?(?: +(?:extends|with) +([[:alnum:]]+))?' --module '^object +(\S+)' --start '^object' --end '{' sample.scala
+Foo Bar
+Foo Baz
+Foo Qux
+Qux Quux
+Qux Quuy
+Qux Quuz
+```
+The rexdep command stops the extraction when it finds the line matches against the regular expression of `--end`.
 
 ### Output: --format, --output
 We can change the output format with --format option.
