@@ -153,7 +153,6 @@ import Bar
 import System.Directory
  $ cat Bar.hs
 module Bar where
-import Control.Applicative
 import System.IO
 ```
 Firstly, we try the following command.
@@ -161,7 +160,6 @@ Firstly, we try the following command.
  $ rexdep --pattern 'import (\S+)' Foo.hs Bar.hs
 Foo.hs Bar
 Foo.hs System.Directory
-Bar.hs Control.Applicative
 Bar.hs System.IO
 ```
 The result looks bad and we will not be able to obtain the dependency graph we really want.
@@ -173,7 +171,6 @@ We specify a regular expression to the argument of --module.
  $ rexdep --pattern 'import (\S+)' --module 'module (\S+)' Foo.hs Bar.hs
 Foo Bar
 Foo System.Directory
-Bar Control.Applicative
 Bar System.IO
 ```
 Now it looks fine.
