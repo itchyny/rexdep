@@ -290,7 +290,7 @@ object Qux
   extends Quux
      with Quuy
      with Quuz {
-     with Qyyy
+  // with Qyyy
 }
 ```
 Firstly, we try with only `--pattern` and `--module` to extract the inheritance relation.
