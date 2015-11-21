@@ -1,15 +1,15 @@
 sudo: false
 language: go
 go:
-- 1.5
+  - 1.5
 env: PATH=/home/travis/gopath/bin:$PATH
 install:
-- go get github.com/laher/goxc
-- go get github.com/aryann/difflib
+  - go get github.com/laher/goxc
+  - go get github.com/aryann/difflib
 script:
-- make test
-- make lint
-- make cross
+  - make test
+  - make lint
+  - make cross
 deploy:
   provider: releases
   api_key:
