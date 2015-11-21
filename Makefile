@@ -21,8 +21,20 @@ test: testdeps build
 testdeps:
 	go get -d -v -t .
 
+LINT_RET = .golint.txt
+lint: lintdeps build
+	go vet
+	rm -f $(LINT_RET)
+	golint ./... | tee .golint.txt
+	test ! -s $(LINT_RET)
+
+lintdeps:
+	go get -d -v -t .
+	go get golang.org/x/tools/cmd/vet
+	go get github.com/golang/lint/golint
+
 clean:
 	rm -rf build snapshot debian
 	go clean
 
-.PHONY: build cross deps test testdeps clean
+.PHONY: build cross deps test testdeps lint lintdeps clean
