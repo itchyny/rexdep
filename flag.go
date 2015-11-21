@@ -4,7 +4,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-var Flags = []cli.Flag{
+var flags = []cli.Flag{
 	cli.StringFlag{
 		Name:  "pattern, p",
 		Value: "",

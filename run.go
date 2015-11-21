@@ -14,12 +14,12 @@ func run(args []string) int {
 
 func newApp() *cli.App {
 	app := cli.NewApp()
-	app.Name = Name
-	app.HelpName = Name
-	app.Usage = Description
-	app.Version = Version
-	app.Author = Author
-	app.Flags = Flags
+	app.Name = name
+	app.HelpName = name
+	app.Usage = description
+	app.Version = version
+	app.Author = author
+	app.Flags = flags
 	app.HideHelp = true
 	app.Action = action
 	return app

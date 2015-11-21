@@ -2,10 +2,10 @@ package main
 
 import "os"
 
-var Name = "rexdep"
-var Version = "v0.0.0"
-var Description = "Roughly extract dependency from source code"
-var Author = "itchyny"
+var name = "rexdep"
+var version = "v0.0.0"
+var description = "Roughly extract dependency from source code"
+var author = "itchyny"
 
 func main() {
 	os.Exit(run(os.Args))
