@@ -9,6 +9,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// Config is the command configuration
 type Config struct {
 	Pattern   *regexp.Regexp
 	Module    *regexp.Regexp
