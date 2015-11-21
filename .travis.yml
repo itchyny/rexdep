@@ -8,6 +8,7 @@ install:
 - go get github.com/aryann/difflib
 script:
 - make test
+- make lint
 - make cross
 deploy:
   provider: releases
