@@ -1,0 +1,11 @@
+{
+  "AppName": "rexdep",
+  "TaskSettings": {
+  },
+  "BuildSettings": {
+    "LdFlags": "-s",
+    "LdFlagsXVars": {
+    }
+  },
+  "ConfigVersion": "0.9"
+}
