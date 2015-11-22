@@ -1,0 +1,11 @@
+Source: rexdep
+Section: admin
+Priority: extra
+Maintainer: itchyny
+Build-Depends: debhelper (>= 9)
+Standards-Version: 2.9.4
+Homepage: https://github.com/itchyny/rexdep
+
+Package: rexdep
+Architecture: all
+Description: Roughly extract dependency relation from source code
