@@ -26,9 +26,6 @@ deploy:
     - snapshot/rexdep_netbsd_386.zip
     - snapshot/rexdep_netbsd_amd64.zip
     - snapshot/rexdep_netbsd_arm.zip
-    - snapshot/rexdep_snapshot_amd64.deb
-    - snapshot/rexdep_snapshot_armhf.deb
-    - snapshot/rexdep_snapshot_i386.deb
     - snapshot/rexdep_windows_386.zip
     - snapshot/rexdep_windows_amd64.zip
   on:
