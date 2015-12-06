@@ -32,7 +32,7 @@ var flags = []cli.Flag{
 	cli.StringFlag{
 		Name:  "format",
 		Value: "",
-		Usage: "Specify the format of the output; `default', `dot', `csv' and `json' are available.",
+		Usage: "Specify the format of the output; `default', `dot', `csv', `tsv' and `json' are available.",
 	},
 	cli.StringFlag{
 		Name:  "output, o",

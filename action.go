@@ -29,6 +29,8 @@ func output(config *Config, dependency *Dependency, errors []error) {
 		outputDot(config.Output, dependency)
 	case "csv":
 		outputCsv(config.Output, dependency)
+	case "tsv":
+		outputTsv(config.Output, dependency)
 	case "json":
 		outputJSON(config.Output, dependency)
 	default:

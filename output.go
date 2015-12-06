@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"regexp"
 	"sort"
 	"strconv"
 )
@@ -29,6 +30,19 @@ func outputCsv(writer io.Writer, dependency *Dependency) {
 	for _, module := range dependency.modules {
 		for _, to := range keys(dependency.relation[module]) {
 			fmt.Fprintf(writer, "%s,%s\n", strconv.Quote(module), strconv.Quote(to))
+		}
+	}
+}
+
+func outputTsv(writer io.Writer, dependency *Dependency) {
+	escape := func(str string) string {
+		unescape := regexp.MustCompile(`\\([\"'\\])`)
+		ret := unescape.ReplaceAllString(strconv.Quote(str), "$1")
+		return ret[1 : len(ret)-1]
+	}
+	for _, module := range dependency.modules {
+		for _, to := range keys(dependency.relation[module]) {
+			fmt.Fprintf(writer, "%s\t%s\n", escape(module), escape(to))
 		}
 	}
 }
