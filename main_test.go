@@ -23,7 +23,7 @@ func TestMain(t *testing.T) {
 			cmd.Stderr = stderr
 			output, err := cmd.Output()
 			if err != nil {
-				t.Errorf("FAIL: execution failed: " + path + ": " + err.Error())
+				t.Errorf("FAIL: execution failed: " + path + ": " + err.Error() + " " + stderr.String())
 			} else {
 				outfile := strings.TrimSuffix(path, filepath.Ext(path)) + ".txt"
 				expected, err := ioutil.ReadFile(outfile)
