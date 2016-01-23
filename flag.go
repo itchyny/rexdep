@@ -30,6 +30,10 @@ var flags = []cli.Flag{
 		Usage: "Recursively inspect files in subdirectories",
 	},
 	cli.StringFlag{
+		Name:  "reldir",
+		Usage: "Regard the path relative to the specified directory as each module names",
+	},
+	cli.StringFlag{
 		Name:  "format",
 		Value: "",
 		Usage: "Specify the format of the output; `default', `dot', `csv', `tsv' and `json' are available.",

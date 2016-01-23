@@ -21,7 +21,9 @@ func extract(name string, config *Config) (*Dependency, []error) {
 				if err == nil && !info.IsDir() {
 					deps, err := extractFile(name, config)
 					errs = append(errs, err...)
-					dependency.concat(deps)
+					if deps != nil {
+						dependency.concat(deps)
+					}
 				}
 				return nil
 			})
@@ -41,6 +43,16 @@ func extractFile(name string, config *Config) (*Dependency, []error) {
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	module := path.Base(name)
+	if config.Reldir != "" {
+		name, err = filepath.Abs(name)
+		if err != nil {
+			return nil, []error{err}
+		}
+		module, err = filepath.Rel(config.Reldir, name)
+		if err != nil {
+			return nil, []error{err}
+		}
+	}
 	return extractCore(module, scanner, config), nil
 }
 

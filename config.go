@@ -4,6 +4,7 @@ import (
 	"errors"
 	"io"
 	"os"
+	"path/filepath"
 	"regexp"
 
 	"github.com/codegangsta/cli"
@@ -18,6 +19,7 @@ type Config struct {
 	Format    string
 	Paths     []string
 	Recursive bool
+	Reldir    string
 	Output    io.Writer
 }
 
@@ -62,6 +64,14 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 		end = nil
 	}
 
+	reldir := ctx.GlobalString("reldir")
+	if reldir != "" {
+		reldir, err = filepath.Abs(reldir)
+		if err != nil {
+			errs = append(errs, errors.New(regexErrorMessage("--reldir")+err.Error()+"\n\n"))
+		}
+	}
+
 	output := ctx.App.Writer
 	outfile := ctx.GlobalString("output")
 	if outfile != "" {
@@ -90,6 +100,7 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 		Format:    ctx.GlobalString("format"),
 		Paths:     paths,
 		Recursive: ctx.GlobalBool("recursive"),
+		Reldir:    reldir,
 		Output:    output,
 	}, nil
 }
