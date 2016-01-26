@@ -3,7 +3,7 @@ package main
 import "os"
 
 var name = "rexdep"
-var version = "v0.0.4"
+var version = "v0.0.5"
 var description = "Roughly extract dependency from source code"
 var author = "itchyny"
 
