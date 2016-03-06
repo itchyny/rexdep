@@ -15,6 +15,10 @@ var flags = []cli.Flag{
 		Value: "",
 		Usage: "Pattern to extract module names (example: '^module\\s+(\\S+)')",
 	},
+	cli.BoolFlag{
+		Name:  "reverse",
+		Usage: "Assume reversed order; module names appear after dependant patterns",
+	},
 	cli.StringFlag{
 		Name:  "start, s",
 		Value: "",

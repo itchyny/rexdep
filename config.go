@@ -14,6 +14,7 @@ import (
 type Config struct {
 	Pattern   *regexp.Regexp
 	Module    *regexp.Regexp
+	Reverse   bool
 	Start     *regexp.Regexp
 	End       *regexp.Regexp
 	Format    string
@@ -95,6 +96,7 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 	return &Config{
 		Pattern:   pattern,
 		Module:    module,
+		Reverse:   ctx.GlobalBool("reverse"),
 		Start:     start,
 		End:       end,
 		Format:    ctx.GlobalString("format"),
