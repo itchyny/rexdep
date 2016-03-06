@@ -1,0 +1,6 @@
+@require 2
+class 1
+
+@require 3
+@require 4
+class 2
