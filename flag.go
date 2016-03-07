@@ -34,8 +34,8 @@ var flags = []cli.Flag{
 		Usage: "Recursively inspect files in subdirectories",
 	},
 	cli.StringFlag{
-		Name:  "reldir",
-		Usage: "Regard the path relative to the specified directory as each module names",
+		Name:  "root",
+		Usage: "Regard the specified directory as the root directory of the modules",
 	},
 	cli.StringFlag{
 		Name:  "format",

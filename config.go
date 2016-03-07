@@ -20,7 +20,7 @@ type Config struct {
 	Format    string
 	Paths     []string
 	Recursive bool
-	Reldir    string
+	Root      string
 	Output    io.Writer
 }
 
@@ -65,11 +65,11 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 		end = nil
 	}
 
-	reldir := ctx.GlobalString("reldir")
-	if reldir != "" {
-		reldir, err = filepath.Abs(reldir)
+	root := ctx.GlobalString("root")
+	if root != "" {
+		root, err = filepath.Abs(root)
 		if err != nil {
-			errs = append(errs, errors.New(regexErrorMessage("--reldir")+err.Error()+"\n\n"))
+			errs = append(errs, errors.New(regexErrorMessage("--root")+err.Error()+"\n\n"))
 		}
 	}
 
@@ -102,7 +102,7 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 		Format:    ctx.GlobalString("format"),
 		Paths:     paths,
 		Recursive: ctx.GlobalBool("recursive"),
-		Reldir:    reldir,
+		Root:      root,
 		Output:    output,
 	}, nil
 }

@@ -43,12 +43,12 @@ func extractFile(name string, config *Config) (*Dependency, []error) {
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	module := path.Base(name)
-	if config.Reldir != "" {
+	if config.Root != "" {
 		name, err = filepath.Abs(name)
 		if err != nil {
 			return nil, []error{err}
 		}
-		module, err = filepath.Rel(config.Reldir, name)
+		module, err = filepath.Rel(config.Root, name)
 		if err != nil {
 			return nil, []error{err}
 		}
