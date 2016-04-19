@@ -31,8 +31,7 @@ lint: lintdeps build
 
 lintdeps:
 	go get -d -v -t .
-	go get golang.org/x/tools/cmd/vet
-	go get github.com/golang/lint/golint
+	go get -u github.com/golang/lint/golint
 
 clean:
 	rm -rf build snapshot debian
