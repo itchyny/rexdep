@@ -22,12 +22,9 @@ test: testdeps build
 testdeps:
 	go get -d -v -t .
 
-LINT_RET = .golint.txt
 lint: lintdeps build
 	go vet
-	rm -f $(LINT_RET)
-	golint ./... | tee $(LINT_RET)
-	test ! -s $(LINT_RET)
+	golint -set_exit_status ./...
 
 lintdeps:
 	go get -d -v -t .
