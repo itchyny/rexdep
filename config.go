@@ -33,17 +33,17 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 	}
 
 	if ctx.GlobalString("pattern") == "" {
-		errs = append(errs, errors.New("Specify --pattern (-p) to extract imports.\n\n"))
+		errs = append(errs, errors.New("specify --pattern (-p) to extract imports"))
 	}
 
 	pattern, err := regexp.Compile(ctx.GlobalString("pattern"))
 	if err != nil {
-		errs = append(errs, errors.New(regexErrorMessage("--pattern (-p)")+err.Error()+"\n\n"))
+		errs = append(errs, errors.New(regexErrorMessage("--pattern (-p)")+err.Error()))
 	}
 
 	module, err := regexp.Compile(ctx.GlobalString("module"))
 	if err != nil {
-		errs = append(errs, errors.New(regexErrorMessage("--module (-m)")+err.Error()+"\n\n"))
+		errs = append(errs, errors.New(regexErrorMessage("--module (-m)")+err.Error()))
 	}
 	if ctx.GlobalString("module") == "" {
 		module = nil
@@ -51,7 +51,7 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 
 	start, err := regexp.Compile(ctx.GlobalString("start"))
 	if err != nil {
-		errs = append(errs, errors.New(regexErrorMessage("--start (-s)")+err.Error()+"\n\n"))
+		errs = append(errs, errors.New(regexErrorMessage("--start (-s)")+err.Error()))
 	}
 	if ctx.GlobalString("start") == "" {
 		start = nil
@@ -59,7 +59,7 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 
 	end, err := regexp.Compile(ctx.GlobalString("end"))
 	if err != nil {
-		errs = append(errs, errors.New(regexErrorMessage("--end (-e)")+err.Error()+"\n\n"))
+		errs = append(errs, errors.New(regexErrorMessage("--end (-e)")+err.Error()))
 	}
 	if ctx.GlobalString("end") == "" {
 		end = nil
@@ -69,7 +69,7 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 	if root != "" {
 		root, err = filepath.Abs(root)
 		if err != nil {
-			errs = append(errs, errors.New(regexErrorMessage("--root")+err.Error()+"\n\n"))
+			errs = append(errs, errors.New(regexErrorMessage("--root")+err.Error()))
 		}
 	}
 
@@ -78,7 +78,7 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 	if outfile != "" {
 		file, err := os.Create(outfile)
 		if err != nil {
-			errs = append(errs, errors.New("Cannot create the output file: "+outfile+"\n\n"))
+			errs = append(errs, errors.New("cannot create the output file: "+outfile))
 		} else {
 			output = file
 		}
@@ -86,7 +86,7 @@ func makeConfig(ctx *cli.Context) (*Config, []error) {
 
 	paths := ctx.Args()
 	if len(paths) == 0 {
-		errs = append(errs, errors.New("Specify source codes.\n\n"))
+		errs = append(errs, errors.New("specify source codes"))
 	}
 
 	if len(errs) > 0 {
