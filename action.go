@@ -7,7 +7,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-func action(ctx *cli.Context) {
+func action(ctx *cli.Context) error {
 	config, errors := makeConfig(ctx)
 	if errors != nil {
 		for _, err := range errors {
@@ -18,6 +18,7 @@ func action(ctx *cli.Context) {
 		dependency, errors := gatherDependency(config)
 		output(config, dependency, errors)
 	}
+	return nil
 }
 
 func output(config *Config, dependency *Dependency, errors []error) {
