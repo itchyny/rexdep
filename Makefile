@@ -26,7 +26,7 @@ LINT_RET = .golint.txt
 lint: lintdeps build
 	go vet
 	rm -f $(LINT_RET)
-	golint ./... | tee .golint.txt
+	golint ./... | tee $(LINT_RET)
 	test ! -s $(LINT_RET)
 
 lintdeps:
