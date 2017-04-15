@@ -10,10 +10,16 @@ import (
 func action(ctx *cli.Context) error {
 	config, errors := makeConfig(ctx)
 	if errors != nil {
+		hasErr := false
 		for _, err := range errors {
-			fmt.Fprintf(os.Stderr, err.Error()+"\n")
+			if err.Error() != "" {
+				fmt.Fprintf(os.Stderr, err.Error()+"\n")
+				hasErr = true
+			}
 		}
-		fmt.Fprintf(os.Stderr, "\n")
+		if hasErr {
+			fmt.Fprintf(os.Stderr, "\n")
+		}
 		cli.ShowAppHelp(ctx)
 	} else {
 		dependency, errors := gatherDependency(config)
