@@ -93,6 +93,8 @@ Each line contains the space separated module names.
 The captured strings in the `--pattern` argument are interpreted as the module names imported by each file.
 The regular expression is compiled to `Regexp` type of Go language, so refer to the [document](https://golang.org/s/re2syntax) for the regexp syntax or try `go doc regexp/syntax`.
 
+Note that on Windows environment, use double quotes instead of single quotes (for example: `rexdep --pattern "import +(\S+)" test1`).
+
 We can use the rexdep command to output in the dot language
 ```bash
  $ rexdep --pattern 'import +(\S+)' --format dot test1
