@@ -8,13 +8,14 @@ build: deps
 install: deps
 	go install
 
-cross: deps
-	goxc -max-processors=8 -build-ldflags="" \
-	    -os="linux darwin freebsd netbsd windows" -arch="386 amd64 arm" -d . \
-	    -resources-include='README*' -n $(BIN)
+cross: crossdeps
+	goxz -os=linux,darwin,freebsd,netbsd,windows -arch=386,amd64 -n $(BIN)
 
 deps:
 	go get -d -v .
+
+crossdeps:
+	go get github.com/Songmu/goxz/cmd/goxz
 
 test: testdeps build
 	go test -v ./...
