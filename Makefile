@@ -32,7 +32,7 @@ lintdeps:
 	go get -u github.com/golang/lint/golint
 
 clean:
-	rm -rf build snapshot debian
+	rm -rf build goxz debian
 	go clean
 
 .PHONY: build cross deps test testdeps lint lintdeps clean
