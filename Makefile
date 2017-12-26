@@ -35,4 +35,4 @@ clean:
 	rm -rf build goxz debian
 	go clean
 
-.PHONY: build cross deps test testdeps lint lintdeps clean
+.PHONY: build install deps cross crossdeps test testdeps lint lintdeps clean
