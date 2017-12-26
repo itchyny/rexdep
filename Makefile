@@ -8,11 +8,11 @@ build: deps
 install: deps
 	go install
 
-cross: crossdeps
-	goxz -os=linux,darwin,freebsd,netbsd,windows -arch=386,amd64 -n $(BIN)
-
 deps:
 	go get -d -v .
+
+cross: crossdeps
+	goxz -os=linux,darwin,freebsd,netbsd,windows -arch=386,amd64 -n $(BIN)
 
 crossdeps:
 	go get github.com/Songmu/goxz/cmd/goxz
