@@ -236,7 +236,7 @@ deps:
 clean:
 	go clean
 
-.PHONY: build deps clean
+.PHONY: all build install deps clean
 ```
 Now rexdep can extract the target dependency relation from this Makefile.
 ```sh
