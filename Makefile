@@ -1,4 +1,4 @@
-BIN = rexdep
+BIN := rexdep
 
 .PHONY: all
 all: clean test build
