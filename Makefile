@@ -1,11 +1,12 @@
 BIN := rexdep
+LDFLAGS := -s -w
 
 .PHONY: all
 all: clean test build
 
 .PHONY: build
 build: deps
-	go build -o build/$(BIN) .
+	go build -ldflags "$(LDFLAGS)" -o build/$(BIN) .
 
 .PHONY: install
 install: deps
