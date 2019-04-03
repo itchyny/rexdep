@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 )
 
 // Config is the command configuration

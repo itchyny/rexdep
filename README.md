@@ -261,7 +261,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 )
 
 func main() {
@@ -272,7 +272,7 @@ The rexdep enables you to specify the range to extract from.
 ```
  $ rexdep --pattern '"(\S+)"' --module '^package +(\S+)' --start '^import +\($' --end '^\)$' sample.go
 main fmt
-main github.com/codegangsta/cli
+main github.com/urfave/cli
 main os
 ```
 When the argument of `--start` is specified, rexdep finds the line which matches to the regular expression.
