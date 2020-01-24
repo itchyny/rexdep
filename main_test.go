@@ -13,7 +13,7 @@ import (
 )
 
 func TestMain(t *testing.T) {
-	build, _ := filepath.Abs("build")
+	build, _ := filepath.Abs(".")
 	filepath.Walk("test", func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(path, ".sh") {
 			cmd := exec.Command("bash", filepath.Base(path))
