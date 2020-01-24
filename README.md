@@ -61,16 +61,12 @@ Now you understand what rexdep stands for; *roughly extract dependency relation*
 ## Installation
 ### Homebrew
 ```bash
- $ brew install itchyny/tap/rexdep
+brew install itchyny/tap/rexdep
 ```
-
-### Download binary from GitHub Releases
-[Releases・itchyny/rexdep - GitHub](https://github.com/itchyny/rexdep/releases)
 
 ### Build from source
 ```bash
- $ go get github.com/itchyny/rexdep
- $ go install github.com/itchyny/rexdep
+go get -u github.com/itchyny/rexdep
 ```
 
 ## Usage
