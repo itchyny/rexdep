@@ -1,4 +1,4 @@
-# rexdep [![Travis Build Status](https://travis-ci.org/itchyny/rexdep.svg?branch=master)](https://travis-ci.org/itchyny/rexdep)
+# rexdep [![CI Status](https://github.com/itchyny/rexdep/workflows/CI/badge.svg)](https://github.com/itchyny/rexdep/actions)
 ### Roughly extract dependency relation from source code
 The rexdep command is a tool for extracting dependency relation from software.
 The command enables us to see the dependency relation among files, modules or packages written in any programming languages.
