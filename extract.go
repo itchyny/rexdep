@@ -65,12 +65,12 @@ func extractCore(module string, scanner *bufio.Scanner, config *Config) *Depende
 		if config.Start != nil && config.Start.MatchString(line) {
 			enable = true
 		}
-		if enable {
-			if config.Module != nil && !config.Reverse {
-				if matches := config.Module.FindStringSubmatch(line); matches != nil {
-					module = matches[len(matches)-1]
-				}
+		if config.Module != nil {
+			if matches := config.Module.FindStringSubmatch(line); matches != nil {
+				module = matches[len(matches)-1]
 			}
+		}
+		if enable {
 			if matches := config.Pattern.FindStringSubmatch(line); len(matches) >= 1 {
 				for _, name := range matches[1:] {
 					if name != "" {
