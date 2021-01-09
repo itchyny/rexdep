@@ -1,2 +1,5 @@
-/goxz
 /rexdep
+/goxz
+*.exe
+*.test
+*.out
