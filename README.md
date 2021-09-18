@@ -1,4 +1,8 @@
-# rexdep [![CI Status](https://github.com/itchyny/rexdep/workflows/CI/badge.svg)](https://github.com/itchyny/rexdep/actions)
+# rexdep
+[![CI Status](https://github.com/itchyny/rexdep/workflows/CI/badge.svg)](https://github.com/itchyny/rexdep/actions)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/itchyny/rexdep/blob/main/LICENSE)
+[![release](https://img.shields.io/github/release/itchyny/rexdep/all.svg)](https://github.com/itchyny/rexdep/releases)
+
 ### Roughly extract dependency relation from source code
 The rexdep command is a tool for extracting dependency relation from software.
 The command enables us to see the dependency relation among files, modules or packages written in any programming languages.
