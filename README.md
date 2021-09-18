@@ -66,7 +66,7 @@ brew install itchyny/tap/rexdep
 
 ### Build from source
 ```bash
-go get github.com/itchyny/rexdep
+go install github.com/itchyny/rexdep@latest
 ```
 
 ## Usage
